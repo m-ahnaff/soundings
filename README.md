@@ -1,5 +1,7 @@
 # Soundings
 
+[![CI](https://github.com/m-ahnaff/soundings/actions/workflows/ci.yml/badge.svg)](https://github.com/m-ahnaff/soundings/actions/workflows/ci.yml)
+
 **A feedback board and public roadmap.** Members post feature requests and bug reports and vote on them, the team triages everything on a Kanban board, and anyone can follow the roadmap.
 
 Built with a **Next.js** frontend and a **FastAPI** backend on **Supabase** (Postgres + Auth), deployed as two Vercel projects.
