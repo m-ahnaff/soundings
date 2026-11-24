@@ -1,0 +1,279 @@
+@import "tailwindcss";
+
+/*
+ * Soundings: utilitarian tracker palette.
+ * Neutral surfaces, slate text, one blue for actions/links/selection.
+ * Text tokens are >= 4.5:1 on their surfaces; control borders >= 3:1.
+ */
+:root {
+  --bg: #ffffff;
+  --bg-sunken: #f6f7f9;
+  --bg-hover: #eff1f4;
+  --bg-pressed: #e4e7ec;
+  --bg-selected: #e8f0fd;
+  --bg-overlay: #ffffff;
+  --text: #1b2638;
+  --text-subtle: #45526a;
+  --text-subtlest: #5f6b80;
+  --border: #dde1e7;
+  --border-control: #8a94a6;
+  --primary: #1f62d6;
+  --primary-hover: #174eae;
+  --primary-text: #ffffff;
+  --link: #1a56c2;
+  --danger: #c43325;
+  --danger-text: #ffffff;
+  --focus: #3b7bea;
+
+  --lz-grey-bg: #e1e4ea;
+  --lz-grey-fg: #3e4a5e;
+  --lz-blue-bg: #d3e3fb;
+  --lz-blue-fg: #1a4fa8;
+  --lz-green-bg: #cdefdc;
+  --lz-green-fg: #1e6040;
+  --lz-red-bg: #fadad6;
+  --lz-red-fg: #a3291f;
+
+  --type-feature: #2e9e61;
+  --type-bug: #d9412f;
+  --type-improvement: #2f73e0;
+
+  --shadow-overlay: 0 0 0 1px rgb(27 38 56 / 0.08), 0 8px 24px -4px rgb(27 38 56 / 0.22);
+  --shadow-raised: 0 1px 1px rgb(27 38 56 / 0.12), 0 0 1px rgb(27 38 56 / 0.2);
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #1c1f24;
+  --bg-sunken: #16181c;
+  --bg-hover: #282c33;
+  --bg-pressed: #323740;
+  --bg-selected: #1d2d47;
+  --bg-overlay: #252930;
+  --text: #d8dde5;
+  --text-subtle: #aab3c1;
+  --text-subtlest: #8f99a8;
+  --border: #353b45;
+  --border-control: #6e7787;
+  --primary: #5b9bff;
+  --primary-hover: #7fb0ff;
+  --primary-text: #0f1217;
+  --link: #79acff;
+  --danger: #f2786a;
+  --danger-text: #16181c;
+  --focus: #7fb0ff;
+
+  --lz-grey-bg: #3a404a;
+  --lz-grey-fg: #c9ced8;
+  --lz-blue-bg: #1f3a66;
+  --lz-blue-fg: #b0ccff;
+  --lz-green-bg: #1d4632;
+  --lz-green-fg: #9ae0b9;
+  --lz-red-bg: #5a2421;
+  --lz-red-fg: #ffb8af;
+
+  --type-feature: #3fb877;
+  --type-bug: #ef5a47;
+  --type-improvement: #4f8ff0;
+
+  --shadow-overlay: 0 0 0 1px rgb(0 0 0 / 0.4), 0 10px 28px -4px rgb(0 0 0 / 0.6);
+  --shadow-raised: 0 1px 1px rgb(0 0 0 / 0.4), 0 0 1px rgb(0 0 0 / 0.5);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-sunken: var(--bg-sunken);
+  --color-hover: var(--bg-hover);
+  --color-pressed: var(--bg-pressed);
+  --color-selected: var(--bg-selected);
+  --color-overlay: var(--bg-overlay);
+  --color-fg: var(--text);
+  --color-fg-subtle: var(--text-subtle);
+  --color-fg-subtlest: var(--text-subtlest);
+  --color-line: var(--border);
+  --color-control: var(--border-control);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--primary-text);
+  --color-link: var(--link);
+  --color-danger: var(--danger);
+  --color-on-danger: var(--danger-text);
+  --color-focus: var(--focus);
+
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --shadow-overlay: var(--shadow-overlay);
+  --shadow-raised: var(--shadow-raised);
+}
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+html {
+  background: var(--bg);
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.43;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Sidebar collapse is applied before paint (see layout) to avoid a shift. */
+[data-sidebar="collapsed"] .sidebar-panel {
+  width: 0;
+  border-right-width: 0;
+}
+[data-sidebar="collapsed"] .sidebar-panel > * {
+  visibility: hidden;
+}
+
+@keyframes tick-up {
+  from {
+    transform: translateY(60%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes tick-down {
+  from {
+    transform: translateY(-60%);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.tick-up {
+  animation: tick-up 160ms ease-out;
+}
+.tick-down {
+  animation: tick-down 160ms ease-out;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.panel-in {
+  animation: slide-in-right 140ms ease-out;
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+.rise {
+  animation: rise 140ms ease-out;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+.skeleton {
+  background: var(--bg-hover);
+  border-radius: 3px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+dialog::backdrop {
+  background: rgb(9 14 24 / 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.prose-lite p + p,
+.prose-lite p + ul,
+.prose-lite ul + p {
+  margin-top: 0.6em;
+}
+.prose-lite ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.prose-lite code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0 0.25em;
+}
+.prose-lite a {
+  color: var(--link);
+}
+.prose-lite a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile: the sidebar becomes a drawer toggled by data-drawer on <html>. */
+@media (max-width: 767.98px) {
+  .sidebar-panel {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 50;
+    width: 272px !important;
+    transform: translateX(-100%);
+    transition: transform 160ms ease-out;
+    box-shadow: var(--shadow-overlay);
+  }
+  .sidebar-panel > * {
+    visibility: visible !important;
+  }
+  [data-drawer="open"] .sidebar-panel {
+    transform: none;
+  }
+  .drawer-scrim {
+    display: none;
+  }
+  [data-drawer="open"] .drawer-scrim {
+    display: block;
+  }
+}
+@media (min-width: 768px) {
+  [data-sidebar="collapsed"] .expand-sidebar {
+    display: flex;
+  }
+}
