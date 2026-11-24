@@ -539,6 +539,11 @@ revoke all on public.profiles, public.posts, public.votes, public.comments, publ
 grant select on public.profiles, public.posts, public.comments, public.post_events
   to anon, authenticated;
 
+-- list_posts() runs as the caller and checks has_voted against public.votes, so
+-- anon needs the table privilege. RLS has no anon policy on votes, so signed-out
+-- callers still see zero vote rows: who-voted-for-what stays private.
+grant select on public.votes to anon;
+
 grant update (display_name) on public.profiles to authenticated;
 grant insert (title, body, category) on public.posts to authenticated;
 grant update (title, body, category, status, pinned) on public.posts to authenticated;
